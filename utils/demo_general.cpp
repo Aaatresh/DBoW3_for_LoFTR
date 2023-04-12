@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 
+#include <fstream>
+
 // DBoW3
 #include "DBoW3.h"
 
@@ -23,7 +25,6 @@
 
 using namespace DBoW3;
 using namespace std;
-
 
 //command line parser
 class CmdLineParser{int argc; char **argv; public: CmdLineParser(int _argc,char **_argv):argc(_argc),argv(_argv){}  bool operator[] ( string param ) {int idx=-1;  for ( int i=0; i<argc && idx==-1; i++ ) if ( string ( argv[i] ) ==param ) idx=i;    return ( idx!=-1 ) ;    } string operator()(string param,string defvalue="-1"){int idx=-1;    for ( int i=0; i<argc && idx==-1; i++ ) if ( string ( argv[i] ) ==param ) idx=i; if ( idx==-1 ) return defvalue;   else  return ( argv[  idx+1] ); }};
@@ -46,6 +47,23 @@ vector<string> readImagePaths(int argc,char **argv,int start){
     vector<string> paths;
     for(int i=start;i<argc;i++)    paths.push_back(argv[i]);
         return paths;
+}
+
+vector<string> extractImagePaths(string image_dir, string image_list_file){
+    vector<string> paths;
+
+    string image_file_name;
+    ifstream f(image_list_file);
+
+    cout << "Processing image file names:\n";
+    while(f >> image_file_name)
+    {
+        paths.push_back(image_dir + "/" + image_file_name);
+        cout << "\t" << image_dir + "/" + image_file_name << "\n";
+    }
+    cout << "Image extraction done!\n";
+
+    return paths;
 }
 
 vector< cv::Mat  >  loadFeatures( std::vector<string> path_to_images,string descriptor="") throw (std::exception){
@@ -186,11 +204,13 @@ int main(int argc,char **argv)
         }
 
         string descriptor=argv[1];
+        string image_dir = argv[2];
+        string image_list_file = argv[3];
 
-        auto images=readImagePaths(argc,argv,2);
+        auto images=extractImagePaths(image_dir, image_list_file);
         vector< cv::Mat   >   features= loadFeatures(images,descriptor);
-        testVocCreation(features);
 
+        testVocCreation(features);
 
         testDatabase(features);
 

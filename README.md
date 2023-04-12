@@ -37,6 +37,11 @@ DBoW3 requires OpenCV only.
 
 For compiling the utils/demo_general.cpp you must compile against OpenCV 3. If you have installed the contrib_modules, use cmake option -DUSE_CONTRIB=ON to enable SURF.
 
+[Added by Anirudh:]
+- Create a directory called 'build'
+- ```cd build```; ```cmake ..``` ; ```sudo make install```
+This should compile the code base. The executable file of interest if in ```build/utils/demo_general```
+
 ## How to use
 
 Check utils/demo_general.cpp
