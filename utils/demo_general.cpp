@@ -171,9 +171,9 @@ void testVocCreation(const vector<cv::Mat> &features)
     voc.create(features);
     cout << "... done!" << endl;
 
-    cout << "Vocabulary information: " << endl
-         << voc << endl << endl;
-
+    // cout << "Vocabulary information: " << endl
+    //      << voc << endl << endl;
+    // 
     // lets do something with this vocabulary
     // cout << "Matching images against themselves (0 low, 1 high): " << endl;
     // BowVector v1, v2;
@@ -216,7 +216,7 @@ void testDatabase(const  vector<cv::Mat > &features)
 
     cout << "... done!" << endl;
 
-    // cout << "Database information: " << endl << db << endl;
+    cout << "Database information: " << endl << db << endl;
 
     // and query the database
     // cout << "Querying the database: " << endl;
@@ -224,7 +224,7 @@ void testDatabase(const  vector<cv::Mat > &features)
     // QueryResults ret;
     // for(size_t i = 0; i < features.size(); i++)
     // {
-    //     db.query(features[i], ret, 4);
+    //     db.query(features[i], ret, 2);
 
     //     // ret[0] is always the same image in this case, because we added it to the
     //     // database. ret[1] is the second best match.
@@ -243,6 +243,22 @@ void testDatabase(const  vector<cv::Mat > &features)
     // once saved, we can load it again
     cout << "Retrieving database once again..." << endl;
     Database db2("small_db.yml.gz");
+
+    cout << "Querying database again: " << endl;
+
+    QueryResults ret;
+    for(size_t i = 0; i < features.size(); i++)
+    {
+        db2.query(features[i], ret, 2);
+
+        // ret[0] is always the same image in this case, because we added it to the
+        // database. ret[1] is the second best match.
+
+        cout << "Searching for Image " << i << ". " << ret << endl;
+    }
+
+    cout << endl;
+
     cout << "... done! This is: " << endl << db2 << endl;
 }
 
