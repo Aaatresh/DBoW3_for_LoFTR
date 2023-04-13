@@ -99,6 +99,44 @@ vector< cv::Mat  >  loadFeatures( std::vector<string> path_to_images,string desc
     return features;
 }
 
+vector< cv::Mat  >  loadLoFTRFeatures(std::vector<string> path_to_images) throw (std::exception){
+    //select detector
+//    cv::Ptr<cv::Feature2D> fdetector;
+//    if (descriptor=="orb")        fdetector=cv::ORB::create();
+//    else if (descriptor=="brisk") fdetector=cv::BRISK::create();
+//#ifdef OPENCV_VERSION_3
+//    else if (descriptor=="akaze") fdetector=cv::AKAZE::create();
+//#endif
+//#ifdef USE_CONTRIB
+//    else if(descriptor=="surf" )  fdetector=cv::xfeatures2d::SURF::create(400, 4, 2, EXTENDED_SURF);
+//#endif
+//
+//    else throw std::runtime_error("Invalid descriptor");
+//    assert(!descriptor.empty());
+
+    vector<cv::Mat> features;
+
+    cout << "Extracting   features..." << endl;
+    for(size_t i = 0; i < path_to_images.size(); ++i)
+    {
+        vector<cv::KeyPoint> keypoints;
+        cv::Mat descriptors;
+        cout<<"reading left and right images: "<<path_to_images[i]<<endl;
+
+        cv::Mat image1 = cv::imread(path_to_images[i] + "/image_left/", 0);
+        cv::Mat image2 = cv::imread(path_to_images[i], 0);
+
+        if(image.empty())throw std::runtime_error("Could not open image"+path_to_images[i]);
+        cout<<"extracting features"<<endl;
+
+        // Extract features - TODO
+
+        features.push_back(descriptors);
+        cout<<"done detecting features"<<endl;
+    }
+    return features;
+}
+
 // ----------------------------------------------------------------------------
 
 void testVocCreation(const vector<cv::Mat> &features)
@@ -207,12 +245,12 @@ int main(int argc,char **argv)
         string image_dir = argv[2];
         string image_list_file = argv[3];
 
-        auto images=extractImagePaths(image_dir, image_list_file);
-        vector< cv::Mat   >   features= loadFeatures(images,descriptor);
-
-        testVocCreation(features);
-
-        testDatabase(features);
+//        auto images=extractImagePaths(image_dir, image_list_file);
+//        vector< cv::Mat   >   features= loadFeatures(images,descriptor);
+//
+//        testVocCreation(features);
+//
+//        testDatabase(features);
 
     }catch(std::exception &ex){
         cerr<<ex.what()<<endl;
